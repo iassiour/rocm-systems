@@ -766,8 +766,9 @@ def test_ml_trace_with_params_without_tracing_flag_warns(tmp_path, monkeypatch):
     assert any("ml-trace-with-params" in w for w in warnings)
     # No launcher injection happens without a tracing flag.
     assert "launch.py" not in args.remaining
-    
-# ---------------------------------------------------------------------------    
+
+
+# ---------------------------------------------------------------------------
 # run_profiling(): native_tool_path reaches get_pc_sampling_profiler_options
 # ---------------------------------------------------------------------------
 def _make_sdk_run_profiling_profiler(

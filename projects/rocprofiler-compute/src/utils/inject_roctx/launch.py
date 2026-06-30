@@ -24,7 +24,7 @@ from utils.inject_roctx.core import install_global_wraps  # noqa: E402
 
 def _report_recordfn_callback_errors() -> None:
     """Warn if the C++ RecordFunction tier swallowed callback exceptions."""
-    torch_backend = sys.modules.get("utils.inject_roctx._backends.torch")
+    torch_backend = sys.modules.get("utils.inject_roctx.backends.torch")
     if torch_backend is None:
         return
     stats = torch_backend.dump_recordfn_stats()

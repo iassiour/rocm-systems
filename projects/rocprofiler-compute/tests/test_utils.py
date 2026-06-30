@@ -6107,13 +6107,15 @@ def test_parse_operator_patterns_generic_attr():
 
 @pytest.mark.torch_ops
 def test_backend_cli_mapping_has_torch_and_triton():
-    from rocprof_compute_analyze.analysis_cli import _BACKEND_CLI
+    from rocprof_compute_analyze.analysis_cli import _ML_API_ANALYSIS_CLI_OPTIONS
 
-    assert _BACKEND_CLI["torch"]["filter_attr"] == "torch_operator"
-    assert _BACKEND_CLI["torch"]["list_attr"] == "list_torch_operators"
-    assert _BACKEND_CLI["triton"]["filter_attr"] == "triton_operator"
-    assert _BACKEND_CLI["triton"]["list_attr"] == "list_triton_operators"
-    assert _BACKEND_CLI["triton"]["label"] == "Triton"
+    torch_cli = _ML_API_ANALYSIS_CLI_OPTIONS["torch"]
+    triton_cli = _ML_API_ANALYSIS_CLI_OPTIONS["triton"]
+    assert torch_cli["filter_attr"] == "torch_operator"
+    assert torch_cli["list_attr"] == "list_torch_operators"
+    assert triton_cli["filter_attr"] == "triton_operator"
+    assert triton_cli["list_attr"] == "list_triton_operators"
+    assert triton_cli["label"] == "Triton"
 
 
 @pytest.mark.torch_ops

@@ -256,7 +256,7 @@ def test_install_many_warns_when_module_does_not_register(fresh_registry, monkey
     warnings: list[tuple] = []
     monkeypatch.setattr("utils.logger.console_warning", lambda *a: warnings.append(a))
 
-    fake_name = "utils.inject_roctx._backends.ghost"
+    fake_name = "utils.inject_roctx.backends.ghost"
     sys.modules[fake_name] = types.ModuleType(fake_name)
     try:
         fresh_registry.install_many(["ghost"])
@@ -272,7 +272,7 @@ def test_install_many_warns_when_module_does_not_register(fresh_registry, monkey
 
 
 def test_triton_backend_skips_when_triton_missing(monkeypatch):
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     real_find_spec = importlib.util.find_spec
     monkeypatch.setattr(
@@ -294,7 +294,7 @@ def test_triton_backend_skips_when_triton_missing(monkeypatch):
 
 def test_triton_backend_wraps_compiled_kernel_run(monkeypatch):
     """CompiledKernel.run() is wrapped in preference to __call__."""
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     pushes: list[tuple] = []
     monkeypatch.setattr(
@@ -320,7 +320,7 @@ def test_triton_backend_wraps_compiled_kernel_run(monkeypatch):
 
 def test_triton_backend_wraps_jitfunction_run(monkeypatch):
     """JITFunction.run is wrapped for eager launches."""
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     pushes: list[str] = []
     monkeypatch.setattr(
@@ -347,7 +347,7 @@ def test_triton_backend_wraps_jitfunction_run(monkeypatch):
 
 def test_triton_backend_reentrancy_dedups_nested_launch(monkeypatch):
     """Nested JITFunction.run and CompiledKernel.run emit one marker."""
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     pushes: list[str] = []
     monkeypatch.setattr(
@@ -388,7 +388,7 @@ def test_triton_backend_reentrancy_dedups_nested_launch(monkeypatch):
 
 def test_triton_backend_patch_is_idempotent(monkeypatch):
     """Patching twice does not re-wrap the launch entry point."""
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     pushes: list[str] = []
     monkeypatch.setattr(
@@ -423,7 +423,7 @@ def test_triton_backend_patch_is_idempotent(monkeypatch):
 
 def test_triton_backend_registers_framework_root(monkeypatch):
     """install() registers triton's package directory as a framework root."""
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     monkeypatch.setattr(triton_backend, "_resolve_triton", lambda: True)
     monkeypatch.setattr(triton_backend, "patch_triton_launcher", lambda: None)
@@ -442,7 +442,7 @@ def test_triton_backend_registers_framework_root(monkeypatch):
 
 
 def test_triton_backend_skips_when_python_tier_unavailable(monkeypatch):
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     monkeypatch.setattr(triton_backend, "_resolve_triton", lambda: True)
     monkeypatch.setattr(triton_backend.core, "ensure_python_tier", lambda: False)
@@ -475,7 +475,7 @@ def test_ensure_python_tier_short_circuits_when_already_configured(monkeypatch):
 
 
 def test_extract_kernel_name_prefers_attr_then_meta_then_fn():
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     named = types.SimpleNamespace(name="direct")
     assert triton_backend._extract_kernel_name(named) == "direct"
@@ -515,7 +515,7 @@ def core_with_python_tier():
 def torch_backend_tiers():
     """Return the torch backend wired to in-memory Python-tier sinks."""
     from utils.inject_roctx import core
-    from utils.inject_roctx._backends import torch as torch_mod
+    from utils.inject_roctx.backends import torch as torch_mod
 
     pushed: list[str] = []
     popped: list[None] = []
@@ -704,7 +704,7 @@ def test_cap_args_truncates_long_blobs():
 
 def test_triton_build_args_tensor_and_scalar():
     from utils.inject_roctx import core
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     fake_tensor = types.SimpleNamespace(shape=(2, 3), dtype="torch.float32")
     params = [
@@ -735,7 +735,7 @@ def test_triton_build_args_tensor_and_scalar():
 def test_triton_build_args_drops_compiled_kernel_preamble():
     """CompiledKernel launch args keep only kernel params, not the launcher
     preamble (grid, stream, function, metadata, hooks)."""
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     class _LazyDict:
         pass
@@ -771,7 +771,7 @@ def test_triton_build_args_drops_compiled_kernel_preamble():
 def test_triton_build_args_drops_internal_types_without_names():
     """Launcher-internal objects are dropped even when no names are resolved."""
     from utils.inject_roctx import core
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     core.set_args_capture(True, True)
 
@@ -788,7 +788,7 @@ def test_triton_build_args_drops_internal_types_without_names():
 
 def test_triton_build_args_respects_gate():
     from utils.inject_roctx import core
-    from utils.inject_roctx._backends import triton as triton_backend
+    from utils.inject_roctx.backends import triton as triton_backend
 
     core.set_args_capture(False, False)
     blob = triton_backend._build_triton_args(
@@ -799,7 +799,7 @@ def test_triton_build_args_respects_gate():
 
 def test_torch_build_dispatch_args_formats(monkeypatch):
     from utils.inject_roctx import core
-    from utils.inject_roctx._backends import torch as torch_backend
+    from utils.inject_roctx.backends import torch as torch_backend
 
     # Stand in for torch.Tensor so the formatter takes the tensor branch.
     class FakeTensor:
@@ -829,7 +829,7 @@ def test_torch_build_dispatch_args_formats(monkeypatch):
 
 def test_torch_build_dispatch_args_without_schema(monkeypatch):
     """Positional args render unlabelled when no schema is available."""
-    from utils.inject_roctx._backends import torch as torch_backend
+    from utils.inject_roctx.backends import torch as torch_backend
 
     class FakeTensor:
         def __init__(self, shape, dtype):
