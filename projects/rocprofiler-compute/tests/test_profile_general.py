@@ -3309,7 +3309,13 @@ def test_torch_trace_overhead(binary_handler_profile_rocprof_compute):
     returncode_with_flag = binary_handler_profile_rocprof_compute(
         config,
         workload_dir_with_flag,
-        ["--experimental", "--torch-trace", "--iteration-multiplexing"],
+        [
+            "--experimental",
+            "--torch-trace",
+            "--ml-trace-with-params",
+            "off",
+            "--iteration-multiplexing",
+        ],
         check_success=True,
         roof=False,
         app_name="torch_test_app",
