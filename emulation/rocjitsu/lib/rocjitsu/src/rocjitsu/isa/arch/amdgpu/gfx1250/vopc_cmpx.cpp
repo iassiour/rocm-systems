@@ -65,13 +65,8 @@ void VCmpxLtF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -200,13 +195,8 @@ void VCmpxEqF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -335,13 +325,8 @@ void VCmpxLeF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -470,13 +455,8 @@ void VCmpxGtF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -605,13 +585,8 @@ void VCmpxLgF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -740,13 +715,8 @@ void VCmpxGeF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -875,13 +845,8 @@ void VCmpxOF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1010,13 +975,8 @@ void VCmpxUF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1145,13 +1105,8 @@ void VCmpxNgeF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1280,13 +1235,8 @@ void VCmpxNlgF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1415,13 +1365,8 @@ void VCmpxNgtF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1550,13 +1495,8 @@ void VCmpxNleF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1685,13 +1625,8 @@ void VCmpxNeqF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1820,13 +1755,8 @@ void VCmpxNltF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -1953,13 +1883,8 @@ void VCmpxLtF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2086,13 +2011,8 @@ void VCmpxEqF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2219,13 +2139,8 @@ void VCmpxLeF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2352,13 +2267,8 @@ void VCmpxGtF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2485,13 +2395,8 @@ void VCmpxLgF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2618,13 +2523,8 @@ void VCmpxGeF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2751,13 +2651,8 @@ void VCmpxOF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -2884,13 +2779,8 @@ void VCmpxUF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3017,13 +2907,8 @@ void VCmpxNgeF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3150,13 +3035,8 @@ void VCmpxNlgF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3283,13 +3163,8 @@ void VCmpxNgtF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3416,13 +3291,8 @@ void VCmpxNleF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3549,13 +3419,8 @@ void VCmpxNeqF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3682,13 +3547,8 @@ void VCmpxNltF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3815,13 +3675,8 @@ void VCmpxLtF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -3948,13 +3803,8 @@ void VCmpxEqF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4081,13 +3931,8 @@ void VCmpxLeF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4214,13 +4059,8 @@ void VCmpxGtF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4347,13 +4187,8 @@ void VCmpxLgF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4480,13 +4315,8 @@ void VCmpxGeF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4613,13 +4443,8 @@ void VCmpxOF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4746,13 +4571,8 @@ void VCmpxUF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -4879,13 +4699,8 @@ void VCmpxNgeF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5012,13 +4827,8 @@ void VCmpxNlgF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5145,13 +4955,8 @@ void VCmpxNgtF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5278,13 +5083,8 @@ void VCmpxNleF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5411,13 +5211,8 @@ void VCmpxNeqF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5544,13 +5339,8 @@ void VCmpxNltF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5679,13 +5469,8 @@ void VCmpxLtI16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5814,13 +5599,8 @@ void VCmpxEqI16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -5949,13 +5729,8 @@ void VCmpxLeI16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6084,13 +5859,8 @@ void VCmpxGtI16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6219,13 +5989,8 @@ void VCmpxNeI16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6354,13 +6119,8 @@ void VCmpxGeI16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6489,13 +6249,8 @@ void VCmpxLtU16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6624,13 +6379,8 @@ void VCmpxEqU16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6759,13 +6509,8 @@ void VCmpxLeU16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -6894,13 +6639,8 @@ void VCmpxGtU16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7029,13 +6769,8 @@ void VCmpxNeU16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7164,13 +6899,8 @@ void VCmpxGeU16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7297,13 +7027,8 @@ void VCmpxLtI32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7430,13 +7155,8 @@ void VCmpxEqI32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7563,13 +7283,8 @@ void VCmpxLeI32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7696,13 +7411,8 @@ void VCmpxGtI32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7829,13 +7539,8 @@ void VCmpxNeI32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -7962,13 +7667,8 @@ void VCmpxGeI32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8095,13 +7795,8 @@ void VCmpxLtU32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8228,13 +7923,8 @@ void VCmpxEqU32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8361,13 +8051,8 @@ void VCmpxLeU32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8494,13 +8179,8 @@ void VCmpxGtU32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8627,13 +8307,8 @@ void VCmpxNeU32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8760,13 +8435,8 @@ void VCmpxGeU32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -8893,13 +8563,8 @@ void VCmpxLtI64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9026,13 +8691,8 @@ void VCmpxEqI64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9159,13 +8819,8 @@ void VCmpxLeI64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9292,13 +8947,8 @@ void VCmpxGtI64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9425,13 +9075,8 @@ void VCmpxNeI64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9558,13 +9203,8 @@ void VCmpxGeI64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9691,13 +9331,8 @@ void VCmpxLtU64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9824,13 +9459,8 @@ void VCmpxEqU64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -9957,13 +9587,8 @@ void VCmpxLeU64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -10090,13 +9715,8 @@ void VCmpxGtU64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -10223,13 +9843,8 @@ void VCmpxNeU64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -10356,13 +9971,8 @@ void VCmpxGeU64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -10491,13 +10101,8 @@ void VCmpxClassF16Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -10653,13 +10258,8 @@ void VCmpxClassF32Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
@@ -10809,13 +10409,8 @@ void VCmpxClassF64Vopc::execute_impl(amdgpu::Wavefront &wf) {
   uint64_t dpp_old_exec_ = wf.exec();
   uint64_t dpp_write_mask_ = ~0ULL;
   if (inst_.src0 == amdgpu::SRC_DPP) {
-    dpp_write_mask_ = 0;
-    for (uint32_t ln = 0; ln < wf.wf_size(); ++ln) {
-      uint32_t row = ln / 16;
-      uint32_t bank = (ln % 16) / 4;
-      if ((dpp_row_mask_ & (1u << row)) && (dpp_bank_mask_ & (1u << bank)))
-        dpp_write_mask_ |= (1ULL << ln);
-    }
+    dpp_write_mask_ = amdgpu::dpp::dpp_write_mask(wf.wf_size(), dpp_ctrl_, dpp_row_mask_,
+                                                  dpp_bank_mask_, dpp_bound_ctrl_);
   }
   if (inst_.src0 == amdgpu::SRC_DPP)
     amdgpu::dpp::apply_dpp(src_operands_[0], dpp_ctrl_, dpp_row_mask_, dpp_bank_mask_,
