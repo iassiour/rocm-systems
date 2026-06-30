@@ -32,7 +32,6 @@ _TRITON_SKIP_KWARGS = frozenset({"grid", "warmup", "stream", "num_warps", "num_s
 # Launcher-internal types that are not kernel arguments.
 _TRITON_INTERNAL_TYPES = frozenset({"LazyDict", "HookChain"})
 
-
 class _TritonState:
     """Resolved Triton launch entry-point handles, populated by _resolve_triton()."""
 
