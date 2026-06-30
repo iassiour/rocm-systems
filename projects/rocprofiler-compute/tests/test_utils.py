@@ -6118,8 +6118,6 @@ def test_backend_cli_mapping_has_torch_and_triton():
 
 @pytest.mark.torch_ops
 def test_filter_by_backend_selects_only_requested_backend():
-    import pandas as pd
-
     from rocprof_compute_analyze.analysis_cli import cli_analysis
 
     df = pd.DataFrame({
@@ -6136,8 +6134,6 @@ def test_filter_by_backend_selects_only_requested_backend():
 
 @pytest.mark.torch_ops
 def test_filter_by_backend_without_column_defaults_to_torch():
-    import pandas as pd
-
     from rocprof_compute_analyze.analysis_cli import cli_analysis
 
     df = pd.DataFrame({"Operator_Name": ["aten::mm", "aten::relu"]})

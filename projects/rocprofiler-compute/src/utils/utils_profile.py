@@ -15,7 +15,7 @@ from typing import Any, Optional, Union, cast
 import config
 import utils.utils_profile_csv as csv_ops
 from utils import rocpd_data
-from utils.inject_roctx.constants import KNOWN_BACKENDS
+from utils.inject_roctx.constants import KNOWN_ML_API_BACKENDS
 from utils.inject_roctx.marker_format import decode_args
 from utils.logger import (
     console_debug,
@@ -44,7 +44,7 @@ ProfilerOptions = Union[list[str], dict[str, Union[str, list[str]]]]
 # optional "|args=<ENC>" segment that precedes it.
 _UNKNOWN_BACKEND = "unknown"
 _BACKEND_SUFFIX_RE = re.compile(
-    r"\|(" + "|".join(re.escape(b) for b in KNOWN_BACKENDS) + r")$"
+    r"\|(" + "|".join(re.escape(b) for b in KNOWN_ML_API_BACKENDS) + r")$"
 )
 # Captures the optional percent-encoded args segment.
 _ARGS_SEGMENT_RE = re.compile(r"\|args=([^|]*)$")
@@ -58,6 +58,11 @@ def is_live_attach(
         isinstance(profiler_options, dict)
         and profiler_options.get("ROCPROF_ATTACH_PID") is not None
     )
+
+
+def pc_sampling_unit(method: str) -> str:
+    """Map a PC sampling method to its sampling unit."""
+    return "time" if method == "host_trap" else "cycles"
 
 
 def _classify_output_line(line: str) -> None:
