@@ -2058,6 +2058,9 @@ VirtualGPU::~VirtualGPU() {
     std::scoped_lock l(execution());
     SetCoalesceWindow(0, nullptr);
   }
+  // Drop the retained reference on the last tracked completion signal (if any) so its owning
+  // ProfilingSignal can be reclaimed when the signal tracker is torn down below.
+  SetLastCompletionSignal(nullptr);
 
   if (timestamp_ != nullptr) {
     timestamp_->release();
